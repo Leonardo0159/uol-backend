@@ -3,7 +3,7 @@ const Produto = require('../models/produtoModel');
 
 const getAll = async () => {
     const [rows] = await connection.execute('SELECT * FROM Produto');
-    return rows.map(row => new Produto(row.id, row.nome, row.descricao, row.preco, row.quantidade, row.categoria, row.fornecedorId, row.created_at));
+    return rows.map(row => new Produto(row.id, row.nome, row.descricao, row.preco, row.quantidade, row.categoria, row.fornecedor_id, row.created_at));
 };
 
 const getPaginated = async (page, limit) => {
@@ -12,7 +12,7 @@ const getPaginated = async (page, limit) => {
     const totalProducts = totalRows[0].total;
 
     const [rows] = await connection.execute('SELECT * FROM Produto LIMIT ? OFFSET ?', [limit, offset]);
-    const produtos = rows.map(row => new Produto(row.id, row.nome, row.descricao, row.preco, row.quantidade, row.categoria, row.fornecedorId, row.created_at));
+    const produtos = rows.map(row => new Produto(row.id, row.nome, row.descricao, row.preco, row.quantidade, row.categoria, row.fornecedor_id, row.created_at));
 
     return {
         totalProducts,
@@ -22,7 +22,7 @@ const getPaginated = async (page, limit) => {
 
 const getByNome = async (nome) => {
     const [rows] = await connection.execute('SELECT * FROM Produto WHERE nome LIKE ?', [`%${nome}%`]);
-    return rows.map(row => new Produto(row.id, row.nome, row.descricao, row.preco, row.quantidade, row.categoria, row.fornecedorId, row.created_at));
+    return rows.map(row => new Produto(row.id, row.nome, row.descricao, row.preco, row.quantidade, row.categoria, row.fornecedor_id, row.created_at));
 };
 
 const createProduto = async (produto) => {

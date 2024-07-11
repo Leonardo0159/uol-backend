@@ -1,5 +1,5 @@
 class Produto {
-    constructor(id, nome, descricao, preco, quantidade, categoria, fornecedorId, dataCriacao) {
+    constructor(id, nome, descricao, preco, quantidade, categoria, fornecedorId, created_at) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -7,7 +7,7 @@ class Produto {
         this.quantidade = quantidade;
         this.categoria = categoria;
         this.fornecedorId = fornecedorId;
-        this.dataCriacao = dataCriacao;
+        this.dataCriacao = created_at;
     }
 }
 
