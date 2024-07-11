@@ -16,16 +16,16 @@ Este projeto é uma aplicação backend desenvolvida com Node.js e Express para 
 
 ## Instale as dependências:
 
-npm install
+- npm install
 
 ## Configure o banco de dados MySQL:
 
 Crie um banco de dados MySQL e configure as variáveis de ambiente no arquivo .env com as informações de conexão ao banco de dados. Exemplo de .env:
 
-MYSQL_HOST=localhost
-MYSQL_USER=root
-MYSQL_PASSWORD=sua_senha
-MYSQL_DB=uolapi
+- MYSQL_HOST=localhost
+- MYSQL_USER=root
+- MYSQL_PASSWORD=sua_senha
+- MYSQL_DB=uolapi
 
 ## Crie as tabelas necessárias no banco de dados. Você pode usar o seguinte script SQL como exemplo:
 
@@ -49,27 +49,27 @@ CREATE TABLE produto (
 
 ## Execução:
 
-npm start
+- npm start
 
 ## Testes:
 
-npm test
+- npm test
 
 ## Endpoints:
 
 Fornecedores
-GET /fornecedores: Lista todos os fornecedores.
-POST /fornecedores: Cria um novo fornecedor.
-DELETE /fornecedores/:id: Deleta um fornecedor.
-PUT /fornecedores/:id: Atualiza um fornecedor.
+- GET /fornecedores: Lista todos os fornecedores.
+- POST /fornecedores: Cria um novo fornecedor.
+- DELETE /fornecedores/:id: Deleta um fornecedor.
+- PUT /fornecedores/:id: Atualiza um fornecedor.
 
 Produtos
-GET /produtos: Lista todos os produtos.
-GET /produtos/paginados?page=1: Lista produtos com paginação (10 produtos por página).
-GET /produtos/nome/:nome: Busca produtos pelo nome.
-POST /produtos: Cria um novo produto.
-DELETE /produtos/:id: Deleta um produto.
-PUT /produtos/:id: Atualiza um produto.
+- GET /produtos: Lista todos os produtos.
+- GET /produtos/paginados?page=1: Lista produtos com paginação (10 produtos por página).
+- GET /produtos/nome/:nome: Busca produtos pelo nome.
+- POST /produtos: Cria um novo produto.
+- DELETE /produtos/:id: Deleta um produto.
+- PUT /produtos/:id: Atualiza um produto.
 
 ##Documentação da API:
 
