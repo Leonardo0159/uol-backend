@@ -32,18 +32,18 @@ Crie um banco de dados MySQL e configure as variáveis de ambiente no arquivo .e
 CREATE TABLE fornecedor (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nome VARCHAR(255) NOT NULL,
-  codigo_pais VARCHAR(2) NOT NULL
+  codigo_pais VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE produto (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nome VARCHAR(255) NOT NULL,
-  descricao TEXT,
+  descricao VARCHAR(255),
   preco FLOAT NOT NULL,
   quantidade INT NOT NULL,
   categoria VARCHAR(255),
   fornecedor_id INT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  created_at VARCHAR(45),
   FOREIGN KEY (fornecedor_id) REFERENCES fornecedor(id)
 );
 
