@@ -2,30 +2,6 @@
 
 Este projeto é uma aplicação backend desenvolvida com Node.js e Express para gerenciar fornecedores e produtos, integrando com a API pública REST Countries para agregar informações de localização dos fornecedores.
 
-## Estrutura do Projeto
-
-/src
-/config
-connection.js
-/controllers
-fornecedorController.js
-produtoController.js
-/middlewares
-fornecedorMiddleware.js
-produtoMiddleware.js
-/models
-fornecedorModel.js
-produtoModel.js
-/services
-fornecedorService.js
-produtoService.js
-app.js
-router.js
-/tests
-fornecedorService.test.js
-produtoService.test.js
-README.md
-
 ## Pré-requisitos
 
 - Node.js (versão 14 ou superior)
