@@ -1,6 +1,8 @@
 const express = require('express');
 const fornecedorController = require('./controllers/fornecedorController');
 const fornecedorMiddleware = require('./middlewares/fornecedorMiddleware');
+const produtoController = require('./controllers/produtoController');
+const produtoMiddleware = require('./middlewares/produtoMiddleware');
 
 const router = express.Router();
 
@@ -115,6 +117,193 @@ router.put('/fornecedores/:id', fornecedorMiddleware.validateMandatory, forneced
  *         id: 1
  *         nome: Fornecedor Exemplo
  *         codigoPais: BR
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Produtos
+ *   description: API de gerenciamento de produtos
+ */
+
+/**
+ * @swagger
+ * /produtos:
+ *   get:
+ *     summary: Lista todos os produtos
+ *     tags: [Produtos]
+ *     responses:
+ *       200:
+ *         description: Lista de produtos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Produto'
+ */
+router.get('/produtos', produtoController.getAll);
+
+/**
+ * @swagger
+ * /produtos/paginados:
+ *   get:
+ *     summary: Lista produtos com paginação
+ *     tags: [Produtos]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         description: Número da página
+ *     responses:
+ *       200:
+ *         description: Lista de produtos com paginação
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Produto'
+ */
+router.get('/produtos/paginados', produtoController.getPaginated);
+
+/**
+ * @swagger
+ * /produtos/nome/{nome}:
+ *   get:
+ *     summary: Busca produtos pelo nome
+ *     tags: [Produtos]
+ *     parameters:
+ *       - in: path
+ *         name: nome
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Nome do produto
+ *     responses:
+ *       200:
+ *         description: Lista de produtos com o nome especificado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Produto'
+ */
+router.get('/produtos/nome/:nome', produtoController.getByNome);
+
+/**
+ * @swagger
+ * /produtos:
+ *   post:
+ *     summary: Cria um novo produto
+ *     tags: [Produtos]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Produto'
+ *     responses:
+ *       201:
+ *         description: Produto criado com sucesso
+ */
+router.post('/produtos', produtoMiddleware.validateMandatory, produtoController.createProduto);
+
+/**
+ * @swagger
+ * /produtos/{id}:
+ *   delete:
+ *     summary: Deleta um produto
+ *     tags: [Produtos]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID do produto
+ *     responses:
+ *       204:
+ *         description: Produto deletado com sucesso
+ */
+router.delete('/produtos/:id', produtoController.deleteProduto);
+
+/**
+ * @swagger
+ * /produtos/{id}:
+ *   put:
+ *     summary: Atualiza um produto
+ *     tags: [Produtos]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID do produto
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Produto'
+ *     responses:
+ *       200:
+ *         description: Produto atualizado com sucesso
+ */
+router.put('/produtos/:id', produtoMiddleware.validateMandatory, produtoController.updateProduto);
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Produto:
+ *       type: object
+ *       required:
+ *         - nome
+ *         - preco
+ *         - quantidade
+ *         - fornecedorId
+ *       properties:
+ *         id:
+ *           type: string
+ *           format: int
+ *           description: ID do produto
+ *         nome:
+ *           type: string
+ *           description: Nome do produto
+ *         descricao:
+ *           type: string
+ *           description: Descrição do produto
+ *         preco:
+ *           type: number
+ *           format: float
+ *           description: Preço do produto
+ *         quantidade:
+ *           type: integer
+ *           description: Quantidade do produto
+ *         categoria:
+ *           type: string
+ *           description: Categoria do produto
+ *         fornecedorId:
+ *           type: string
+ *           format: int
+ *           description: ID do fornecedor
+ *         dataCriacao:
+ *           type: string
+ *           format: date-time
+ *           description: Data de criação do produto
+ *       example:
+ *         id: 1
+ *         nome: Produto Exemplo
+ *         descricao: Descrição do produto exemplo
+ *         preco: 100.50
+ *         quantidade: 10
+ *         categoria: Categoria Exemplo
+ *         fornecedorId: 1
+ *         dataCriacao: 2024-07-11T12:00:00Z
  */
 
 module.exports = router;
