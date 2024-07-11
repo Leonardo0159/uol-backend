@@ -71,7 +71,7 @@ Produtos
 - DELETE /produtos/:id: Deleta um produto.
 - PUT /produtos/:id: Atualiza um produto.
 
-##Documentação da API:
+## Documentação da API:
 
 A documentação da API está disponível no Swagger. Após iniciar a aplicação, acesse http://localhost:3333/api-docs para visualizar a documentação interativa.
 
