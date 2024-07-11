@@ -1,9 +1,28 @@
 const connection = require('../config/connection');
 const Fornecedor = require('../models/fornecedorModel');
+const axios = require('axios');
 
 const getAll = async () => {
     const [rows] = await connection.execute('SELECT * FROM Fornecedor');
-    return rows.map(row => new Fornecedor(row.id, row.nome, row.codigo_pais));
+    const fornecedores = rows.map(row => new Fornecedor(row.id, row.nome, row.codigo_pais));
+
+    const fornecedoresComInfoPais = await Promise.all(fornecedores.map(async (fornecedor) => {
+        try {
+            const response = await axios.get(`https://restcountries.com/v3.1/alpha/${fornecedor.codigoPais}`);
+            const countryInfo = response.data[0];
+            return {
+                ...fornecedor,
+                pais: countryInfo.name.common,
+                regiao: countryInfo.region,
+                subregiao: countryInfo.subregion
+            };
+        } catch (error) {
+            console.error(`Erro ao buscar informações do país para o código: ${fornecedor.codigoPais}`, error);
+            return fornecedor;
+        }
+    }));
+
+    return fornecedoresComInfoPais;
 };
 
 const createFornecedor = async (fornecedor) => {
