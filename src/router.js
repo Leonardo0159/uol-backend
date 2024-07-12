@@ -33,6 +33,61 @@ router.get('/fornecedores', fornecedorController.getAll);
 
 /**
  * @swagger
+ * /fornecedores/paginados:
+ *   get:
+ *     summary: Lista fornecedores com paginação
+ *     tags: [Fornecedores]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         description: Número da página
+ *     responses:
+ *       200:
+ *         description: Lista de fornecedores com paginação
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 totalFornecedores:
+ *                   type: integer
+ *                   description: Número total de fornecedores
+ *                 fornecedores:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Fornecedor'
+ */
+router.get('/fornecedores/paginados', fornecedorController.getPaginated);
+
+/**
+ * @swagger
+ * /fornecedores/nome/{nome}:
+ *   get:
+ *     summary: Busca fornecedores pelo nome
+ *     tags: [Fornecedores]
+ *     parameters:
+ *       - in: path
+ *         name: nome
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Nome do fornecedor
+ *     responses:
+ *       200:
+ *         description: Lista de fornecedores com o nome especificado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Fornecedor'
+ */
+router.get('/fornecedores/nome/:nome', fornecedorController.getByNome);
+
+/**
+ * @swagger
  * /fornecedores:
  *   post:
  *     summary: Cria um novo fornecedor

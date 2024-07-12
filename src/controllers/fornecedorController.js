@@ -1,35 +1,70 @@
 const fornecedorService = require('../services/fornecedorService');
-const Fornecedor = require('../models/fornecedorModel');
 
 const getAll = async (req, res) => {
+  try {
     const fornecedores = await fornecedorService.getAll();
-    return res.status(200).json(fornecedores);
+    res.status(200).json(fornecedores);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar fornecedores' });
+  }
+};
+
+const getPaginated = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = 10;
+
+  try {
+    const result = await fornecedorService.getPaginated(page, limit);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar fornecedores paginados' });
+  }
+};
+
+const getByNome = async (req, res) => {
+  const { nome } = req.params;
+  try {
+    const fornecedores = await fornecedorService.getByNome(nome);
+    res.status(200).json(fornecedores);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar fornecedores por nome' });
+  }
 };
 
 const createFornecedor = async (req, res) => {
-    const { nome, codigoPais } = req.body;
-    const newFornecedor = new Fornecedor(null, nome, codigoPais);
-    const createdFornecedor = await fornecedorService.createFornecedor(newFornecedor);
-    return res.status(201).json(createdFornecedor);
+  try {
+    const fornecedor = await fornecedorService.createFornecedor(req.body);
+    res.status(201).json(fornecedor);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao criar fornecedor' });
+  }
 };
 
 const deleteFornecedor = async (req, res) => {
+  try {
     const { id } = req.params;
-    const result = await fornecedorService.deleteFornecedor(id);
-    return res.status(204).json(result);
+    await fornecedorService.deleteFornecedor(id);
+    res.status(204).end();
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao deletar fornecedor' });
+  }
 };
 
 const updateFornecedor = async (req, res) => {
+  try {
     const { id } = req.params;
-    const { nome, codigoPais } = req.body;
-    const updatedFornecedor = new Fornecedor(id, nome, codigoPais);
-    const result = await fornecedorService.updateFornecedor(id, updatedFornecedor);
-    return res.status(200).json(result);
+    await fornecedorService.updateFornecedor(id, req.body);
+    res.status(200).json({ message: 'Fornecedor atualizado com sucesso' });
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao atualizar fornecedor' });
+  }
 };
 
 module.exports = {
-    getAll,
-    createFornecedor,
-    deleteFornecedor,
-    updateFornecedor
+  getAll,
+  getPaginated,
+  getByNome,
+  createFornecedor,
+  deleteFornecedor,
+  updateFornecedor
 };
