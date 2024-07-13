@@ -41,12 +41,15 @@ const createFornecedor = async (req, res) => {
 };
 
 const deleteFornecedor = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
     await fornecedorService.deleteFornecedor(id);
-    res.status(204).end();
+    return res.status(204).json({ message: 'Fornecedor deletado com sucesso' });
   } catch (error) {
-    res.status(500).json({ error: 'Erro ao deletar fornecedor' });
+    if (error.status === 400) {
+      return res.status(400).json({ message: error.message });
+    }
+    return res.status(500).json({ message: 'Erro ao deletar fornecedor' });
   }
 };
 

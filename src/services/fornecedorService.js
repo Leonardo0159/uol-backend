@@ -86,9 +86,19 @@ const createFornecedor = async (fornecedor) => {
 };
 
 const deleteFornecedor = async (id) => {
-  const query = 'DELETE FROM Fornecedor WHERE id = ?';
-  const [result] = await connection.execute(query, [id]);
-  return result;
+  try {
+    const query = 'DELETE FROM Fornecedor WHERE id = ?';
+    const [result] = await connection.execute(query, [id]);
+    return result;
+  } catch (error) {
+    if (error.code === 'ER_ROW_IS_REFERENCED_2') {
+      const customError = new Error('Não é possível deletar o fornecedor pois ele está vinculado a um produto.');
+      customError.status = 400;
+      throw customError;
+    }
+    console.error("Erro ao deletar fornecedor:", error);
+    throw error;
+  }
 };
 
 const updateFornecedor = async (id, fornecedor) => {
