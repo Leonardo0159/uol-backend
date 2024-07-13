@@ -2,17 +2,53 @@ const connection = require('../config/connection');
 const Produto = require('../models/produtoModel');
 
 const getAll = async () => {
-    const [rows] = await connection.execute('SELECT * FROM Produto');
-    return rows.map(row => new Produto(row.id, row.nome, row.descricao, row.preco, row.quantidade, row.categoria, row.fornecedor_id, row.created_at));
+    const query = `
+        SELECT p.*, f.id as fornecedor_id, f.nome as fornecedor_nome
+        FROM Produto p
+        JOIN Fornecedor f ON p.fornecedor_id = f.id
+    `;
+    const [rows] = await connection.execute(query);
+    return rows.map(row => ({
+        id: row.id,
+        nome: row.nome,
+        descricao: row.descricao,
+        preco: row.preco,
+        quantidade: row.quantidade,
+        categoria: row.categoria,
+        fornecedor: {
+            id: row.fornecedor_id,
+            nome: row.fornecedor_nome
+        },
+        created_at: row.created_at
+    }));
 };
+
 
 const getPaginated = async (page, limit) => {
     const offset = (page - 1) * limit;
     const [totalRows] = await connection.execute('SELECT COUNT(*) AS total FROM Produto');
     const totalProducts = totalRows[0].total;
 
-    const [rows] = await connection.execute('SELECT * FROM Produto LIMIT ? OFFSET ?', [limit, offset]);
-    const produtos = rows.map(row => new Produto(row.id, row.nome, row.descricao, row.preco, row.quantidade, row.categoria, row.fornecedor_id, row.created_at));
+    const query = `
+        SELECT p.*, f.id as fornecedor_id, f.nome as fornecedor_nome
+        FROM Produto p
+        JOIN Fornecedor f ON p.fornecedor_id = f.id
+        LIMIT ? OFFSET ?
+    `;
+    const [rows] = await connection.execute(query, [limit, offset]);
+    const produtos = rows.map(row => ({
+        id: row.id,
+        nome: row.nome,
+        descricao: row.descricao,
+        preco: row.preco,
+        quantidade: row.quantidade,
+        categoria: row.categoria,
+        fornecedor: {
+            id: row.fornecedor_id,
+            nome: row.fornecedor_nome
+        },
+        created_at: row.created_at
+    }));
 
     return {
         totalProducts,
@@ -21,8 +57,26 @@ const getPaginated = async (page, limit) => {
 };
 
 const getByNome = async (nome) => {
-    const [rows] = await connection.execute('SELECT * FROM Produto WHERE nome LIKE ?', [`%${nome}%`]);
-    return rows.map(row => new Produto(row.id, row.nome, row.descricao, row.preco, row.quantidade, row.categoria, row.fornecedor_id, row.created_at));
+    const query = `
+        SELECT p.*, f.id as fornecedor_id, f.nome as fornecedor_nome
+        FROM Produto p
+        JOIN Fornecedor f ON p.fornecedor_id = f.id
+        WHERE p.nome LIKE ? OR p.categoria LIKE ? OR f.nome LIKE ?
+    `;
+    const [rows] = await connection.execute(query, [`%${nome}%`, `%${nome}%`, `%${nome}%`]);
+    return rows.map(row => ({
+        id: row.id,
+        nome: row.nome,
+        descricao: row.descricao,
+        preco: row.preco,
+        quantidade: row.quantidade,
+        categoria: row.categoria,
+        fornecedor: {
+            id: row.fornecedor_id,
+            nome: row.fornecedor_nome
+        },
+        created_at: row.created_at
+    }));
 };
 
 const createProduto = async (produto) => {
