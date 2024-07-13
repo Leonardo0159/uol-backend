@@ -61,9 +61,9 @@ const getByNome = async (nome) => {
         SELECT p.*, f.id as fornecedor_id, f.nome as fornecedor_nome
         FROM Produto p
         JOIN Fornecedor f ON p.fornecedor_id = f.id
-        WHERE p.nome LIKE ? OR p.categoria LIKE ? OR f.nome LIKE ?
-    `;
-    const [rows] = await connection.execute(query, [`%${nome}%`, `%${nome}%`, `%${nome}%`]);
+        WHERE p.nome LIKE '%${nome}%' OR p.categoria LIKE '%${nome}%' OR f.nome LIKE '%${nome}%'
+    `.replace(/\s+/g, ' ').trim();
+    const [rows] = await connection.execute(query);
     return rows.map(row => ({
         id: row.id,
         nome: row.nome,
