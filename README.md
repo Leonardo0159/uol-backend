@@ -26,6 +26,8 @@ Crie um banco de dados MySQL e configure as variáveis de ambiente no arquivo .e
 - MYSQL_USER=root
 - MYSQL_PASSWORD=sua_senha
 - MYSQL_DB=uolapi
+- PORT=3333
+- JWT_SECRET=seu_segredo_jwt
 
 ## Crie as tabelas necessárias no banco de dados. Você pode usar o seguinte script SQL como exemplo:
 
@@ -45,6 +47,13 @@ CREATE TABLE produto (
   fornecedor_id INT,
   created_at VARCHAR(45),
   FOREIGN KEY (fornecedor_id) REFERENCES fornecedor(id)
+);
+
+CREATE TABLE usuario (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  senha VARCHAR(255) NOT NULL
 );
 
 ## Execução:
@@ -70,6 +79,10 @@ Produtos
 - POST /produtos: Cria um novo produto.
 - DELETE /produtos/:id: Deleta um produto.
 - PUT /produtos/:id: Atualiza um produto.
+
+Usuarios
+- POST /register: Registra um novo usuário.
+- POST /login: Faz login de um usuário.
 
 ## Documentação da API:
 
