@@ -11,20 +11,13 @@ const createUsuario = async (usuario) => {
     return { insertId: result.insertId };
 };
 
-const getUsuarioByEmail = async (email) => {
+const loginUsuario = async (email, senha) => {
     const [rows] = await connection.execute('SELECT * FROM Usuario WHERE email = ?', [email]);
     if (rows.length === 0) {
-        return null;
-    }
-    const row = rows[0];
-    return new Usuario(row.id, row.nome, row.email, row.senha);
-};
-
-const loginUsuario = async (email, senha) => {
-    const usuario = await getUsuarioByEmail(email);
-    if (!usuario) {
         return { error: 'Usuário não encontrado' };
     }
+    const usuario = new Usuario(rows[0].id, rows[0].nome, rows[0].email, rows[0].senha);
+
     const isPasswordValid = await bcrypt.compare(senha, usuario.senha);
     if (!isPasswordValid) {
         return { error: 'Senha incorreta' };
