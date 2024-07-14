@@ -1,25 +1,33 @@
-const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
 const options = {
     definition: {
-        openapi: '3.0.0',
+        openapi: "3.0.0",
         info: {
-            title: 'API de Controle de Estoque',
-            version: '1.0.0',
-            description: 'Documentação da API de Controle de Estoque',
+            title: "API de Exemplo",
+            version: "1.0.0",
+            description: "API de gerenciamento de fornecedores e produtos"
         },
-        servers: [
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT',
+                }
+            }
+        },
+        security: [
             {
-                url: 'http://localhost:3333',
-                description: 'Servidor de Desenvolvimento',
-            },
-        ],
+                bearerAuth: []
+            }
+        ]
     },
-    apis: ['./src/router.js', './src/controllers/*.js', './src/models/*.js'], // Caminho para os arquivos de definição da API
+    apis: ["./src/router.js"], // Caminho para os arquivos de rota
 };
 
-const specs = swaggerJsdoc(options);
+const specs = swaggerJsDoc(options);
 
 module.exports = {
     swaggerUi,

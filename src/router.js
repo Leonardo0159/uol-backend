@@ -3,6 +3,8 @@ const fornecedorController = require('./controllers/fornecedorController');
 const fornecedorMiddleware = require('./middlewares/fornecedorMiddleware');
 const produtoController = require('./controllers/produtoController');
 const produtoMiddleware = require('./middlewares/produtoMiddleware');
+const usuarioController = require('./controllers/usuarioController');
+const authenticate = require('./middlewares/authMiddleware');
 
 const router = express.Router();
 
@@ -359,6 +361,106 @@ router.put('/produtos/:id', produtoMiddleware.validateMandatory, produtoControll
  *         categoria: Categoria Exemplo
  *         fornecedorId: 1
  *         dataCriacao: 2024-07-11T12:00:00Z
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Usuarios
+ *   description: API de gerenciamento de usuários
+ */
+
+/**
+ * @swagger
+ * /register:
+ *   post:
+ *     summary: Registrar um novo usuário
+ *     tags: [Usuarios]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Usuario'
+ *     responses:
+ *       201:
+ *         description: Usuário registrado com sucesso
+ *       400:
+ *         description: Requisição inválida
+ *       500:
+ *         description: Erro no servidor
+ */
+router.post('/register', usuarioController.registerUsuario);
+
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Autenticar um usuário
+ *     tags: [Usuarios]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UsuarioLogin'
+ *     responses:
+ *       200:
+ *         description: Autenticação bem-sucedida
+ *       401:
+ *         description: Credenciais inválidas
+ *       500:
+ *         description: Erro no servidor
+ */
+router.post('/login', usuarioController.loginUsuario);
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Usuario:
+ *       type: object
+ *       required:
+ *         - nome
+ *         - email
+ *         - senha
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: ID do usuário
+ *         nome:
+ *           type: string
+ *           description: Nome do usuário
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: Email do usuário
+ *         senha:
+ *           type: string
+ *           format: password
+ *           description: Senha do usuário
+ *       example:
+ *         id: 1
+ *         nome: Usuario Exemplo
+ *         email: exemplo@exemplo.com
+ *         senha: senha123
+ *     UsuarioLogin:
+ *       type: object
+ *       required:
+ *         - email
+ *         - senha
+ *       properties:
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: Email do usuário
+ *         senha:
+ *           type: string
+ *           format: password
+ *           description: Senha do usuário
+ *       example:
+ *         email: exemplo@exemplo.com
+ *         senha: senha123
  */
 
 module.exports = router;
