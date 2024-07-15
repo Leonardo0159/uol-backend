@@ -2,8 +2,6 @@ const express = require('express');
 const router = require('./router');
 const { swaggerUi, specs } = require('./docs/swagger');
 
-const CSS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css';
-
 const app = express();
 
 app.use((req, res, next) => {
@@ -20,6 +18,6 @@ app.use(express.json());
 app.use(router);
 
 // Configuração do Swagger
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { customCssUrl: CSS_URL }));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css', customCss: '.opblock-summary-path { display: inline-block; }' }));
 
 module.exports = app;
