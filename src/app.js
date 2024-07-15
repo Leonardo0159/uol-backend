@@ -18,6 +18,6 @@ app.use(express.json());
 app.use(router);
 
 // Configuração do Swagger
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css', customCss: '.opblock-summary-path { display: inline; }' }));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css', customCss: '.opblock-summary-path__deprecated { display: inline; }' }));
 
 module.exports = app;
