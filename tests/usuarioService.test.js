@@ -42,7 +42,7 @@ describe('Usuario Service', () => {
 
         const result = await usuarioService.loginUsuario('teste@usuario.com', 'senhaerrada');
 
-        expect(result).toEqual({ error: 'Senha incorreta' });
+        expect(result).toEqual({ error: 'Email ou Senha incorretos' });
         expect(bcrypt.compare).toHaveBeenCalledWith('senhaerrada', 'hashedpassword');
     });
 
@@ -51,7 +51,7 @@ describe('Usuario Service', () => {
 
         const result = await usuarioService.loginUsuario('naoexiste@usuario.com', '123456');
 
-        expect(result).toEqual({ error: 'Usuário não encontrado' });
+        expect(result).toEqual({ error: 'Email ou Senha incorretos' });
         expect(connection.execute).toHaveBeenCalledWith('SELECT * FROM Usuario WHERE email = ?', ['naoexiste@usuario.com']);
     });
 });
