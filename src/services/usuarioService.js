@@ -20,13 +20,13 @@ const createUsuario = async (usuario) => {
 const loginUsuario = async (email, senha) => {
     const [rows] = await connection.execute('SELECT * FROM Usuario WHERE email = ?', [email]);
     if (rows.length === 0) {
-        return { error: 'Usuário não encontrado' };
+        return { error: 'Email ou Senha incorretos' };
     }
     const usuario = new Usuario(rows[0].id, rows[0].nome, rows[0].email, rows[0].senha);
 
     const isPasswordValid = await bcrypt.compare(senha, usuario.senha);
     if (!isPasswordValid) {
-        return { error: 'Senha incorreta' };
+        return { error: 'Email ou Senha incorretos' };
     }
     const token = jwt.sign({ id: usuario.id, email: usuario.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
     return { token };
