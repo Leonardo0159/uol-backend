@@ -26,33 +26,38 @@ const getAll = async () => {
 };
 
 const getPaginated = async (page, limit) => {
-  const offset = (page - 1) * limit;
-  const [totalRows] = await connection.execute('SELECT COUNT(*) AS total FROM Fornecedor');
-  const totalFornecedores = totalRows[0].total;
+  try {
+    const offset = (page - 1) * limit;
+    const [totalRows] = await connection.execute('SELECT COUNT(*) AS total FROM Fornecedor');
+    const totalFornecedores = totalRows[0].total;
 
-  const [rows] = await connection.execute('SELECT * FROM Fornecedor LIMIT ? OFFSET ?', [limit, offset]);
-  const fornecedores = rows.map(row => new Fornecedor(row.id, row.nome, row.codigo_pais));
+    const [rows] = await connection.execute('SELECT * FROM Fornecedor LIMIT ? OFFSET ?', [limit.toString(), offset.toString()]);
+    const fornecedores = rows.map(row => new Fornecedor(row.id, row.nome, row.codigo_pais));
 
-  const fornecedoresComInfoPais = await Promise.all(fornecedores.map(async (fornecedor) => {
-    try {
-      const response = await axios.get(`https://restcountries.com/v3.1/alpha/${fornecedor.codigoPais}`);
-      const countryInfo = response.data[0];
-      return {
-        ...fornecedor,
-        pais: countryInfo.name.common,
-        regiao: countryInfo.region,
-        subregiao: countryInfo.subregion
-      };
-    } catch (error) {
-      console.error(`Erro ao buscar informações do país para o código: ${fornecedor.codigoPais}`, error);
-      return fornecedor;
-    }
-  }));
+    const fornecedoresComInfoPais = await Promise.all(fornecedores.map(async (fornecedor) => {
+      try {
+        const response = await axios.get(`https://restcountries.com/v3.1/alpha/${fornecedor.codigoPais}`);
+        const countryInfo = response.data[0];
+        return {
+          ...fornecedor,
+          pais: countryInfo.name.common,
+          regiao: countryInfo.region,
+          subregiao: countryInfo.subregion
+        };
+      } catch (error) {
+        console.error(`Erro ao buscar informações do país para o código: ${fornecedor.codigoPais}`, error);
+        return fornecedor;
+      }
+    }));
 
-  return {
-    totalFornecedores,
-    fornecedores: fornecedoresComInfoPais
-  };
+    return {
+      totalFornecedores,
+      fornecedores: fornecedoresComInfoPais
+    };
+  } catch (error) {
+    console.error('Erro no getPaginated do fornecedorService:', error);
+    throw error;
+  }
 };
 
 const getByNome = async (nome) => {

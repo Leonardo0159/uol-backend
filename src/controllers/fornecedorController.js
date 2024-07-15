@@ -17,6 +17,7 @@ const getPaginated = async (req, res) => {
     const result = await fornecedorService.getPaginated(page, limit);
     res.status(200).json(result);
   } catch (error) {
+    console.error('Erro no getPaginated do fornecedorController:', error);
     res.status(500).json({ error: 'Erro ao buscar fornecedores paginados' });
   }
 };

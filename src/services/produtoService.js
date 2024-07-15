@@ -35,7 +35,7 @@ const getPaginated = async (page, limit) => {
         JOIN Fornecedor f ON p.fornecedor_id = f.id
         LIMIT ? OFFSET ?
     `;
-    const [rows] = await connection.execute(query, [limit, offset]);
+    const [rows] = await connection.execute(query, [limit.toString(), offset.toString()]);
     const produtos = rows.map(row => ({
         id: row.id,
         nome: row.nome,
