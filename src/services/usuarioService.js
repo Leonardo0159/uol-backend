@@ -5,6 +5,12 @@ const jwt = require('jsonwebtoken');
 
 const createUsuario = async (usuario) => {
     const { nome, email, senha } = usuario;
+
+    const [rows] = await connection.execute('SELECT * FROM Usuario WHERE email = ?', [email]);
+    if (rows.length > 0) {
+        return { error: 'Email já cadastrado' };
+    }
+
     const hashedPassword = await bcrypt.hash(senha, 10);
     const query = 'INSERT INTO Usuario (nome, email, senha) VALUES (?, ?, ?)';
     const [result] = await connection.execute(query, [nome, email, hashedPassword]);
