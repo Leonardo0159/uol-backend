@@ -31,7 +31,7 @@ const router = express.Router();
  *               items:
  *                 $ref: '#/components/schemas/Fornecedor'
  */
-router.get('/fornecedores', fornecedorController.getAll);
+router.get('/fornecedores', authenticate, fornecedorController.getAll);
 
 /**
  * @swagger
@@ -61,7 +61,7 @@ router.get('/fornecedores', fornecedorController.getAll);
  *                   items:
  *                     $ref: '#/components/schemas/Fornecedor'
  */
-router.get('/fornecedores/paginados', fornecedorController.getPaginated);
+router.get('/fornecedores/paginados', authenticate, fornecedorController.getPaginated);
 
 /**
  * @swagger
@@ -86,7 +86,7 @@ router.get('/fornecedores/paginados', fornecedorController.getPaginated);
  *               items:
  *                 $ref: '#/components/schemas/Fornecedor'
  */
-router.get('/fornecedores/nome/:nome', fornecedorController.getByNome);
+router.get('/fornecedores/nome/:nome', authenticate, fornecedorController.getByNome);
 
 /**
  * @swagger
@@ -104,7 +104,7 @@ router.get('/fornecedores/nome/:nome', fornecedorController.getByNome);
  *       201:
  *         description: Fornecedor criado com sucesso
  */
-router.post('/fornecedores', fornecedorMiddleware.validateMandatory, fornecedorController.createFornecedor);
+router.post('/fornecedores', authenticate, fornecedorMiddleware.validateMandatory, fornecedorController.createFornecedor);
 
 /**
  * @swagger
@@ -123,7 +123,7 @@ router.post('/fornecedores', fornecedorMiddleware.validateMandatory, fornecedorC
  *       204:
  *         description: Fornecedor deletado com sucesso
  */
-router.delete('/fornecedores/:id', fornecedorController.deleteFornecedor);
+router.delete('/fornecedores/:id', authenticate, fornecedorController.deleteFornecedor);
 
 /**
  * @swagger
@@ -148,7 +148,7 @@ router.delete('/fornecedores/:id', fornecedorController.deleteFornecedor);
  *       200:
  *         description: Fornecedor atualizado com sucesso
  */
-router.put('/fornecedores/:id', fornecedorMiddleware.validateMandatory, fornecedorController.updateFornecedor);
+router.put('/fornecedores/:id', authenticate, fornecedorMiddleware.validateMandatory, fornecedorController.updateFornecedor);
 
 /**
  * @swagger
@@ -199,7 +199,7 @@ router.put('/fornecedores/:id', fornecedorMiddleware.validateMandatory, forneced
  *               items:
  *                 $ref: '#/components/schemas/Produto'
  */
-router.get('/produtos', produtoController.getAll);
+router.get('/produtos', authenticate, produtoController.getAll);
 
 /**
  * @swagger
@@ -223,7 +223,7 @@ router.get('/produtos', produtoController.getAll);
  *               items:
  *                 $ref: '#/components/schemas/Produto'
  */
-router.get('/produtos/paginados', produtoController.getPaginated);
+router.get('/produtos/paginados', authenticate, produtoController.getPaginated);
 
 /**
  * @swagger
@@ -248,7 +248,7 @@ router.get('/produtos/paginados', produtoController.getPaginated);
  *               items:
  *                 $ref: '#/components/schemas/Produto'
  */
-router.get('/produtos/nome/:nome', produtoController.getByNome);
+router.get('/produtos/nome/:nome', authenticate, produtoController.getByNome);
 
 /**
  * @swagger
@@ -266,7 +266,7 @@ router.get('/produtos/nome/:nome', produtoController.getByNome);
  *       201:
  *         description: Produto criado com sucesso
  */
-router.post('/produtos', produtoMiddleware.validateMandatory, produtoController.createProduto);
+router.post('/produtos', authenticate, produtoMiddleware.validateMandatory, produtoController.createProduto);
 
 /**
  * @swagger
@@ -285,7 +285,7 @@ router.post('/produtos', produtoMiddleware.validateMandatory, produtoController.
  *       204:
  *         description: Produto deletado com sucesso
  */
-router.delete('/produtos/:id', produtoController.deleteProduto);
+router.delete('/produtos/:id', authenticate, produtoController.deleteProduto);
 
 /**
  * @swagger
@@ -310,7 +310,7 @@ router.delete('/produtos/:id', produtoController.deleteProduto);
  *       200:
  *         description: Produto atualizado com sucesso
  */
-router.put('/produtos/:id', produtoMiddleware.validateMandatory, produtoController.updateProduto);
+router.put('/produtos/:id', authenticate, produtoMiddleware.validateMandatory, produtoController.updateProduto);
 
 /**
  * @swagger
