@@ -1,6 +1,6 @@
 const express = require('express');
 const router = require('./router');
-const { swaggerUi, specs } = require('./docs/swagger');
+const { swaggerUi, specs, swaggerPath } = require('./docs/swagger');
 
 const app = express();
 
@@ -12,11 +12,13 @@ app.use((req, res, next) => {
 
     next();
 });
+
 app.use('/uploads', express.static('uploads'));
 app.use(express.json());
 app.use(router);
 
-// Configuração do Swagger
+// Servir os arquivos estáticos do Swagger
+app.use('/api-docs', express.static(swaggerPath));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 module.exports = app;

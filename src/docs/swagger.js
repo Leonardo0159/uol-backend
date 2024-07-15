@@ -1,5 +1,6 @@
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const swaggerUiDist = require('swagger-ui-dist');
 
 const options = {
     definition: {
@@ -28,8 +29,10 @@ const options = {
 };
 
 const specs = swaggerJsDoc(options);
+const swaggerPath = swaggerUiDist.getAbsoluteFSPath();
 
 module.exports = {
     swaggerUi,
-    specs
+    specs,
+    swaggerPath,
 };
